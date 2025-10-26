@@ -19,8 +19,15 @@
   ],
   "author": "Laizer",
   "license": "ISC",
+  "bin": {
+    "expense-tracker": "./index.js"
+  },
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Eleazar-ng/Expense-Tracker/issues"
   },
-  "homepage": "https://github.com/Eleazar-ng/Expense-Tracker#readme"
+  "homepage": "https://github.com/Eleazar-ng/Expense-Tracker#readme",
+  "dependencies": {
+    "commander": "^14.0.2"
+  }
 }
