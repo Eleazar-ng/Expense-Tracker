@@ -66,6 +66,11 @@ function saveExpenses(expenses){
   }
 }
 
+function isExistingId(id, expenses){
+  const expenseIdExists = expenses.some(expense => expense.id === id);
+  return expenseIdExists;
+}
+
 export {
   loadExpenses,
   isValidNumber,
@@ -74,5 +79,6 @@ export {
   generateExpenseId,
   formatCurrency,
   getCurrentDate,
-  saveExpenses
+  saveExpenses,
+  isExistingId
 }

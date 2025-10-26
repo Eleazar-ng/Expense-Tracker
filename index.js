@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { addExpense } from './tracker_operations.js';
+import { addExpense, deleteExpense } from './tracker_operations.js';
 
 // Main CLI 
 const program = new Command()
@@ -13,11 +13,20 @@ program
 // Add Command
 program
   .command('add')
-  .description('add an expense')
+  .description('Add an expense')
   .requiredOption('--description <description>', 'Expense description')
   .requiredOption('--amount <amount>', 'Expense amount')
   .action((options) => {
     addExpense(options.description, options.amount)
+  });
+
+// Delete Command  
+program
+  .command('delete')
+  .description('Delete an expense')
+  .requiredOption('--id <id>', 'Expense ID')
+  .action((options) => {
+    deleteExpense(options.id)
   });
 
 // Handle unknown commands
