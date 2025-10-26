@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+
 import { Command } from 'commander';
-import { addExpense, deleteExpense } from './tracker_operations.js';
+import { addExpense, deleteExpense, updateExpense } from './tracker_operations.js';
 
 // Main CLI 
 const program = new Command()
@@ -28,6 +29,22 @@ program
   .action((options) => {
     deleteExpense(options.id)
   });
+
+// Update Command  
+program
+  .command('update')
+  .description('Update an expense')
+  .requiredOption('--id <id>', 'Expense ID')
+  .option('--description <description>', 'New expense description')
+  .option('--amount <amount>', 'New expense amount')
+  .action((options) => {
+    if(!options.description && !options.amount){
+      console.error('Either description or amount must provided to update an expense')
+      process.exit(1)
+    }
+    updateExpense(options.id, options.description, options.amount)
+  });
+
 
 // Handle unknown commands
 program.on('command:*', () => {

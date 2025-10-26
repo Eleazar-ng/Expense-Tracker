@@ -27,7 +27,7 @@ function addExpense(description, amount){
       id: newExpenseId,
       description,
       amount: formatCurrency(amount),
-      createdAt: getCurrentDate()
+      date: getCurrentDate()
     }
 
     expenses.push(newExpense);
@@ -67,7 +67,45 @@ function deleteExpense(id){
 	}
 }
 
+function updateExpense(id, description, amount){
+  const expenses = loadExpenses();
+  const validId = isValidNumber(id);
+  if(!validId){
+    console.error(`${id} is not a valid ID`)
+    return
+  }
+  const expenseId = parseInt(id);
+
+  const existingId = isExistingId(expenseId, expenses)
+  if(!existingId){
+    console.error(`Expense with ID:${expenseId} does not exist`)
+    return
+  }
+
+  try {
+    const expenseIndex = expenses.findIndex(expense => expense.id === expenseId);
+    if(description){
+      expenses[expenseIndex].description = description;
+    }
+    if(amount){
+      expenses[expenseIndex].amount =amount;
+    }
+
+    expenses[expenseIndex].date = getCurrentDate();
+
+    if(saveExpenses(expenses)){
+      console.log(`Expense updated successfully (ID: ${id})`);
+    } else {
+      console.error('Failed to update expense');
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
 export {
   addExpense,
-  deleteExpense
+  deleteExpense,
+  updateExpense
 }
