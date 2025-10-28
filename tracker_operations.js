@@ -88,7 +88,7 @@ function updateExpense(id, description, amount){
       expenses[expenseIndex].description = description;
     }
     if(amount){
-      expenses[expenseIndex].amount =amount;
+      expenses[expenseIndex].amount = formatCurrency(amount);
     }
 
     expenses[expenseIndex].date = getCurrentDate();
@@ -104,8 +104,23 @@ function updateExpense(id, description, amount){
   }
 }
 
+function listExpense(){
+  const expenses = loadExpenses();
+  if(expenses.length === 0){
+    console.log('No expenses were found');
+    return
+  }
+
+  console.log('\n    ID   Date        Description     Amount');
+  expenses.forEach((expense, index) => {
+    console.log(`${index + 1}.  ${expense.id.toString().padEnd(4)} ${expense.date}  ${expense.description.padEnd(12)} ${expense.amount.padStart(8)}`);
+  })
+  return
+}
+
 export {
   addExpense,
   deleteExpense,
-  updateExpense
+  updateExpense,
+  listExpense
 }

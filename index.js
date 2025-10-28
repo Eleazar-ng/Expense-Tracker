@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { addExpense, deleteExpense, updateExpense } from './tracker_operations.js';
+import { addExpense, deleteExpense, listExpense, updateExpense } from './tracker_operations.js';
 
 // Main CLI 
 const program = new Command()
@@ -44,6 +44,14 @@ program
     }
     updateExpense(options.id, options.description, options.amount)
   });
+
+// List Command
+program
+  .command('list')
+  .description('List expenses')
+  .action(() => {
+    listExpense()
+  })  
 
 
 // Handle unknown commands
