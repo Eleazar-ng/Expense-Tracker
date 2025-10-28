@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { addExpense, deleteExpense, listExpense, updateExpense } from './tracker_operations.js';
+import { addExpense, deleteExpense, getSummary, listExpense, updateExpense } from './tracker_operations.js';
 
 // Main CLI 
 const program = new Command()
@@ -51,7 +51,16 @@ program
   .description('List expenses')
   .action(() => {
     listExpense()
-  })  
+  });
+  
+// Summary Command
+program
+  .command('summary')
+  .description('Get summary of expenses (all or specific month)')
+  .option('--month <month>', 'Month ((1- 12) of the current year)')
+  .action((options) => {
+    getSummary(options.month)
+  })
 
 
 // Handle unknown commands

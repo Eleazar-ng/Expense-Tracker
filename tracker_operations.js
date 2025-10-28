@@ -1,5 +1,5 @@
 
-import { formatCurrency, generateExpenseId, getCurrentDate, isExistingId, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses } from "./helper.js"
+import { formatAmount, formatCurrency, generateExpenseId, getCurrentDate, getMonthFromDate, getMonthName, isExistingId, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses, validateMonth } from "./helper.js"
 
 function addExpense(description, amount){
   const expenses = loadExpenses()
@@ -118,9 +118,62 @@ function listExpense(){
   return
 }
 
+function getSummary(month = null){
+  const expenses = loadExpenses();
+  if(expenses.length === 0){
+    console.log('No expenses were found');
+    return
+  }
+
+  let totalExpense = 0
+
+  try {
+    if(month){
+      const validMonth = validateMonth(month);
+      if(!validMonth){
+        console.error(`${month} is not a valid month number. Month must be between 1 - 12`)
+        return
+      }
+
+      const currentMonth = parseInt(month);
+      const currentYear = new Date().getFullYear();
+      const monthName = getMonthName(month)
+
+      const filteredExpensesByMonth = expenses.filter((expense) => {
+        let expenseMonth = getMonthFromDate(expense.date);
+        return expenseMonth === currentMonth
+      })
+
+      if(filteredExpensesByMonth.length === 0){
+        console.log(`No expenses were found for ${monthName}`);
+        return
+      }
+
+      const filteredExpensesByCurrentYear = filteredExpensesByMonth.filter((expense) => {
+        let expenseYear = new Date(expense.date).getFullYear();
+        return expenseYear === currentYear;
+      })
+
+      if(filteredExpensesByCurrentYear.length === 0){
+        console.log(`No expenses were found for ${monthName} ${currentYear}`);
+        return
+      }
+
+      totalExpense = filteredExpensesByCurrentYear.reduce((sum, expense) => sum + formatAmount(expense.amount), 0)
+
+      console.log(`Total expenses for ${monthName}: ${formatCurrency(totalExpense)}`);
+      return
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
 export {
   addExpense,
   deleteExpense,
   updateExpense,
-  listExpense
+  listExpense,
+  getSummary
 }
