@@ -28,6 +28,13 @@ function isValidNumber(id){
 	return isValidId
 }
 
+function isValidAmount(amount){
+  if (isNaN(amount)) {
+    return false
+  }
+  return true
+}
+
 function isGreaterThanZero(amount){
   if(amount <= 0){
     return false
@@ -108,6 +115,7 @@ export {
   formatCurrency,
   getCurrentDate,
   saveExpenses,
+  isValidAmount
   isExistingId,
   validateMonth,
   getMonthName,

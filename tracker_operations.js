@@ -9,7 +9,7 @@ function addExpense(description, amount){
     return
   }
 
-  const validAmount = isValidNumber(amount);
+  const validAmount = isValidAmount(amount);
   if(!validAmount){
     console.error(`${amount} is not a valid amount; Amount must be a number!`);
     return
@@ -17,7 +17,7 @@ function addExpense(description, amount){
 
   const amountGreaterThanZero  = isGreaterThanZero(amount);
   if(!amountGreaterThanZero){
-    console.error(`${amount} must be greater than 0!`);
+    console.error(`Amount must be greater than 0!`);
     return
   }
 
