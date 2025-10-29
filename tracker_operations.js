@@ -1,5 +1,5 @@
 
-import { formatCurrency, generateExpenseId, getCurrentDate, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses } from "./helper.js"
+import { formatCurrency, generateExpenseId, getCurrentDate, isGreaterThanZero, isValidAmount, isValidDescription, isValidNumber, loadExpenses, saveExpenses } from "./helper.js"
 
 function addExpense(description, amount){
   const expenses = loadExpenses()
@@ -9,7 +9,7 @@ function addExpense(description, amount){
     return
   }
 
-  const validAmount = isValidNumber(amount);
+  const validAmount = isValidAmount(amount);
   if(!validAmount){
     console.error(`${amount} is not a valid amount; Amount must be a number!`);
     return
@@ -17,7 +17,7 @@ function addExpense(description, amount){
 
   const amountGreaterThanZero  = isGreaterThanZero(amount);
   if(!amountGreaterThanZero){
-    console.error(`${amount} must be greater than 0!`);
+    console.error(`Amount must be greater than 0!`);
     return
   }
 
