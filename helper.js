@@ -28,6 +28,13 @@ function isValidNumber(id){
 	return isValidId
 }
 
+function isValidAmount(amount){
+  if (isNaN(amount)) {
+    return false
+  }
+  return true
+}
+
 function isGreaterThanZero(amount){
   if(amount <= 0){
     return false
@@ -71,6 +78,34 @@ function isExistingId(id, expenses){
   return expenseIdExists;
 }
 
+function validateMonth(month){
+  const validNumber = isValidNumber(month);
+  if(!validNumber){
+    return false
+  }
+
+  if(month <= 0 || month > 12){
+    return false
+  }
+  return true
+}
+
+function getMonthName(month){
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  return months[month - 1];
+}
+
+function getMonthFromDate(dateString) {
+  return parseInt(dateString.split('-')[1]); // Extract month from YYYY-MM-DD
+}
+
+function formatAmount(amount){
+  return parseInt(amount.slice(1,))
+}
+
 export {
   loadExpenses,
   isValidNumber,
@@ -80,5 +115,10 @@ export {
   formatCurrency,
   getCurrentDate,
   saveExpenses,
-  isExistingId
+  isValidAmount,
+  isExistingId,
+  validateMonth,
+  getMonthName,
+  getMonthFromDate,
+  formatAmount
 }

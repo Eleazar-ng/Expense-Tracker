@@ -1,5 +1,5 @@
 
-import { formatCurrency, generateExpenseId, getCurrentDate, isExistingId, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses } from "./helper.js"
+import { formatAmount, formatCurrency, generateExpenseId, getCurrentDate, getMonthFromDate, getMonthName, isExistingId, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses, validateMonth } from "./helper.js"
 
 function addExpense(description, amount){
   const expenses = loadExpenses()
@@ -9,7 +9,7 @@ function addExpense(description, amount){
     return
   }
 
-  const validAmount = isValidNumber(amount);
+  const validAmount = isValidAmount(amount);
   if(!validAmount){
     console.error(`${amount} is not a valid amount; Amount must be a number!`);
     return
@@ -17,7 +17,7 @@ function addExpense(description, amount){
 
   const amountGreaterThanZero  = isGreaterThanZero(amount);
   if(!amountGreaterThanZero){
-    console.error(`${amount} must be greater than 0!`);
+    console.error(`Amount must be greater than 0!`);
     return
   }
 
@@ -88,7 +88,7 @@ function updateExpense(id, description, amount){
       expenses[expenseIndex].description = description;
     }
     if(amount){
-      expenses[expenseIndex].amount =amount;
+      expenses[expenseIndex].amount = formatCurrency(amount);
     }
 
     expenses[expenseIndex].date = getCurrentDate();
@@ -104,8 +104,76 @@ function updateExpense(id, description, amount){
   }
 }
 
+function listExpense(){
+  const expenses = loadExpenses();
+  if(expenses.length === 0){
+    console.log('No expenses were found');
+    return
+  }
+
+  console.log('\n    ID   Date        Description     Amount');
+  expenses.forEach((expense, index) => {
+    console.log(`${index + 1}.  ${expense.id.toString().padEnd(4)} ${expense.date}  ${expense.description.padEnd(12)} ${expense.amount.padStart(8)}`);
+  })
+  return
+}
+
+function getSummary(month = null){
+  const expenses = loadExpenses();
+  if(expenses.length === 0){
+    console.log('No expenses were found');
+    return
+  }
+
+  let totalExpense = 0
+
+  try {
+    if(month){
+      const validMonth = validateMonth(month);
+      if(!validMonth){
+        console.error(`${month} is not a valid month number. Month must be between 1 - 12`)
+        return
+      }
+
+      const currentMonth = parseInt(month);
+      const currentYear = new Date().getFullYear();
+      const monthName = getMonthName(month)
+
+      const filteredExpensesByMonth = expenses.filter((expense) => {
+        let expenseMonth = getMonthFromDate(expense.date);
+        return expenseMonth === currentMonth
+      })
+
+      if(filteredExpensesByMonth.length === 0){
+        console.log(`No expenses were found for ${monthName}`);
+        return
+      }
+
+      const filteredExpensesByCurrentYear = filteredExpensesByMonth.filter((expense) => {
+        let expenseYear = new Date(expense.date).getFullYear();
+        return expenseYear === currentYear;
+      })
+
+      if(filteredExpensesByCurrentYear.length === 0){
+        console.log(`No expenses were found for ${monthName} ${currentYear}`);
+        return
+      }
+
+      totalExpense = filteredExpensesByCurrentYear.reduce((sum, expense) => sum + formatAmount(expense.amount), 0)
+
+      console.log(`Total expenses for ${monthName}: ${formatCurrency(totalExpense)}`);
+      return
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
 export {
   addExpense,
   deleteExpense,
-  updateExpense
+  updateExpense,
+  listExpense,
+  getSummary
 }
