@@ -73,6 +73,39 @@ function saveExpenses(expenses){
   }
 }
 
+function isExistingId(id, expenses){
+  const expenseIdExists = expenses.some(expense => expense.id === id);
+  return expenseIdExists;
+}
+
+function validateMonth(month){
+  const validNumber = isValidNumber(month);
+  if(!validNumber){
+    return false
+  }
+
+  if(month <= 0 || month > 12){
+    return false
+  }
+  return true
+}
+
+function getMonthName(month){
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  return months[month - 1];
+}
+
+function getMonthFromDate(dateString) {
+  return parseInt(dateString.split('-')[1]); // Extract month from YYYY-MM-DD
+}
+
+function formatAmount(amount){
+  return parseInt(amount.slice(1,))
+}
+
 export {
   loadExpenses,
   isValidNumber,
@@ -83,4 +116,9 @@ export {
   getCurrentDate,
   saveExpenses,
   isValidAmount
+  isExistingId,
+  validateMonth,
+  getMonthName,
+  getMonthFromDate,
+  formatAmount
 }
