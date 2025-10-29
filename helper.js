@@ -115,7 +115,7 @@ export {
   formatCurrency,
   getCurrentDate,
   saveExpenses,
-  isValidAmount
+  isValidAmount,
   isExistingId,
   validateMonth,
   getMonthName,
