@@ -102,7 +102,7 @@ function getMonthFromDate(dateString) {
 }
 
 function formatAmount(amount){
-  return parseInt(amount.slice(1,))
+  return Number(amount.slice(1,));
 }
 
 export {
