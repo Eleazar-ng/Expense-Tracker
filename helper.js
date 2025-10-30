@@ -28,8 +28,8 @@ function isValidNumber(id){
 	return isValidId
 }
 
-function isGreaterThanZero(amount){
-  if(amount <= 0){
+function isValidAmount(amount){
+  if (isNaN(amount) || amount <= 0) {
     return false
   }
   return true
@@ -48,7 +48,13 @@ function generateExpenseId(expenses){
 }
 
 function formatCurrency(amount) {
-  const parsedCurrency = parseInt(amount);
+  let parsedCurrency
+  let parsedAmount = Number(amount)
+  if(!Number.isInteger(parsedAmount)){
+    parsedCurrency = parseFloat(amount).toFixed(2)
+  }else{
+    parsedCurrency = parseInt(amount);
+  }
   return `${CURRENCY}${parsedCurrency}`;
 }
 
@@ -102,12 +108,12 @@ function formatAmount(amount){
 export {
   loadExpenses,
   isValidNumber,
-  isGreaterThanZero,
   isValidDescription,
   generateExpenseId,
   formatCurrency,
   getCurrentDate,
   saveExpenses,
+  isValidAmount,
   isExistingId,
   validateMonth,
   getMonthName,

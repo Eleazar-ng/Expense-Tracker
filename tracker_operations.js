@@ -1,5 +1,5 @@
 
-import { formatAmount, formatCurrency, generateExpenseId, getCurrentDate, getMonthFromDate, getMonthName, isExistingId, isGreaterThanZero, isValidDescription, isValidNumber, loadExpenses, saveExpenses, validateMonth } from "./helper.js"
+import { formatAmount, formatCurrency, generateExpenseId, getCurrentDate, getMonthFromDate, getMonthName, isExistingId, isValidAmount, isValidDescription, isValidNumber, loadExpenses, saveExpenses, validateMonth } from "./helper.js"
 
 function addExpense(description, amount){
   const expenses = loadExpenses()
@@ -9,15 +9,9 @@ function addExpense(description, amount){
     return
   }
 
-  const validAmount = isValidNumber(amount);
+  const validAmount = isValidAmount(amount);
   if(!validAmount){
-    console.error(`${amount} is not a valid amount; Amount must be a number!`);
-    return
-  }
-
-  const amountGreaterThanZero  = isGreaterThanZero(amount);
-  if(!amountGreaterThanZero){
-    console.error(`${amount} must be greater than 0!`);
+    console.error(`${amount} is not a valid amount; Amount must be a number > 0`);
     return
   }
 
@@ -74,8 +68,24 @@ function updateExpense(id, description, amount){
     console.error(`${id} is not a valid ID`)
     return
   }
-  const expenseId = parseInt(id);
 
+  if(description){
+    const validDescription = isValidDescription(description);
+    if(!validDescription){
+      console.error(`${description} cannot be empty`);
+      return
+    }
+  }
+
+  if(amount){
+    const validAmount = isValidAmount(amount);
+    if(!validAmount){
+      console.error(`${amount} is not a valid amount; Amount must be a number > 0`);
+      return
+    }
+  }
+
+  const expenseId = parseInt(id);
   const existingId = isExistingId(expenseId, expenses)
   if(!existingId){
     console.error(`Expense with ID:${expenseId} does not exist`)
