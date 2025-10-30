@@ -170,10 +170,13 @@ function getSummary(month = null){
       }
 
       totalExpense = filteredExpensesByCurrentYear.reduce((sum, expense) => sum + formatAmount(expense.amount), 0)
-
       console.log(`Total expenses for ${monthName}: ${formatCurrency(totalExpense)}`);
       return
     }
+
+    totalExpense = expenses.reduce((sum, expense) => sum + formatAmount(expense.amount), 0)
+    console.log(`Total expenses: ${formatCurrency(totalExpense)}`);
+    return
   } catch (error) {
     console.error('Error:', error.message);
     process.exit(1);
