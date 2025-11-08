@@ -13,4 +13,6 @@ A simple CLI to manage your finances.
 ## Installation
 1. Clone or download this repository
 2. Navigate to the project directory
-3. Run "npm link" in your terminal 
+3. Run "npm install" in your terminal 
+4. Run "npm link" in your terminal 
+
